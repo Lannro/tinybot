@@ -1,0 +1,21 @@
+version: '2'
+services:
+  web:
+    build: .
+    container_name: tinybot
+    restart: unless-stopped
+    expose:
+      - ${VIRTUAL_PORT}
+    environment:
+      - SLACK_BOT_USER_OATH=${SLACK_BOT_USER_OATH}
+      - SLACK_VERIFICATION_TOKEN=${SLACK_VERIFICATION_TOKEN}
+      - VIRTUAL_HOST=${VIRTUAL_HOST}
+      - VIRTUAL_PORT=${VIRTUAL_PORT}
+      - WOO_SITE_URL=${WOO_SITE_URL}
+      - WOO_USERNAME=${WOO_USERNAME}
+      - WOO_PASSWORD=${WOO_PASSWORD}
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
