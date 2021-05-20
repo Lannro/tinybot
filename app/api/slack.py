@@ -40,7 +40,7 @@ class message_builder:
                 "text": {
                     "type": "plain_text",
                     "text": "{name}{sold_text}".format(name=name, sold_text=sold_text),
-                    "emoji": true
+                    "emoji": True
                     }
                 },
             {
