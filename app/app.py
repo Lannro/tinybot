@@ -56,8 +56,8 @@ def get_product(response_channel, product_id):
         slack.post_message(response_channel, "Could not retrieve product_id:{}".format(product_id))
         return
 
-    message = message_builder.woocommerce_product(product)    
-    slack.post_message(response_channel, message)
+    blocks = message_builder.woocommerce_product(product)
+    slack.post_message(response_channel, "product", blocks=blocks)
 
 @app.route("/get", methods=['POST'])
 def get_request():

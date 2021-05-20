@@ -1,17 +1,17 @@
-from . import *
+import requests
+import json
 
-class SlackInstance(APIInstance):
+class SlackInstance:
     def __init__(self, bearer):
-        APIInstance.__init__(self, url="https://slack.com/api", bearer=bearer)
+        self._bearer=bearer
 
-    def call_api(self, url, post_fields=None):
-        response = super().call_api(url, post_fields=post_fields)
-        return response
-
-    def post_message(self, response_channel, message):
-        logging.debug("Sending message to slack:{}".format(message))
-        response = self.call_api("chat.postMessage?channel={}".format(response_channel), post_fields=message)
-        logging.debug("Slack response: {}".format(response.read()))
+    def post_message(self, channel, text, blocks = None):
+        return requests.post('https://slack.com/api/chat.postMessage', {
+            'token': self._bearer,
+            'channel': channel,
+            'text': text,
+            'blocks': json.dumps(blocks) if blocks else None
+        }).json()
 
 class message_builder:
     def woocommerce_product(product):
