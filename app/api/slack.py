@@ -18,7 +18,7 @@ class SlackInstance:
 
 class message_builder:
     def woocommerce_product(product):
-        return_message = { "blocks" : [
+        return_message = [
             {
                 "type": "section",
                 "text": {
@@ -31,7 +31,7 @@ class message_builder:
                     "alt_text": "alt text for image"
                     }
                 }
-            ]}
+            ]
         return return_message
         
         
