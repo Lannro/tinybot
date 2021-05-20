@@ -81,7 +81,6 @@ def check_request():
         return "Error checking products."
 
 if __name__ == '__main__':
-    global woo, slack
     app.run(host='0.0.0.0')
     woo = WoocommerceInstance(url=_WOO_SITE_URL,username=_WOO_USERNAME,password=_WOO_PASSWORD)
     slack = SlackInstance(bearer=_SLACK_BOT_USER_OATH)
