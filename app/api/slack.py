@@ -1,11 +1,12 @@
 import requests
 import json
+import logging
 
 class SlackInstance:
     def __init__(self, bearer):
         self._bearer=bearer
 
-    def post_message(channel, text, blocks = None):
+    def post_message(self, channel, text, blocks = None):
         logging.debug("Sending message to slack:{}".format(text))
         response = requests.post('https://slack.com/api/chat.postMessage', {
             'token': self._bearer,
