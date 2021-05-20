@@ -64,5 +64,84 @@ class message_builder:
                 }
             ]
         return return_message
+    
+    def woocommerce_order(order):
+        order_id = order['id']
+        status = order['status']
+        items_purchased = []
+        for item in order['line_items']:
+            items_purchased.append({"type": "mrkdwn",
+                                    "text": "*{product_name} ({product_id})*\n*SKU:* {product_sku}\n<https://shop.tinycatpottery.ca/wp-admin/post.php?post={product_id}&action=edit|Product Link>".format(product_name=item['name'],
+                                                                                                                                                                                                          product_id=item['product_id'],
+                                                                                                                                                                                                          product_sku=item['sku'],)})
+        customer_name= "{} {}".format(order['billing']['first_name'], order['billing']['last_name'])
+        customer_id  = order['customer_id']
+        note = "*note:* _{}_".format(order['customer_note']) if order['customer_note'] else ""
+
+        billing_address = "{}\n".format(customer_name)
+        for key in order['billing']:
+            if key == 'first_name' or key == 'last_name':
+                continue
+            if not order['billing'][key]:
+                continue
+            billing_address += "{}\n".format(str(order['billing'][key]))
+            
+        shipping_address = "{}\n".format(customer_name)
+        for key in order['shipping']:
+            if key == 'first_name' or key == 'last_name':
+                continue
+            if not order['shipping'][key]:
+                continue
+            shipping_address += "{}\n".format(str(order['shipping'][key]))
+
+        
+        return_message = [
+            {
+                "type": "header",
+                "text": {
+                    "type": "plain_text",
+                    "text": "{order_id} - {status}".format(order_id=order_id,status=status),
+                    "emoji": true
+                    }
+                },
+            {
+                "type": "divider"
+                },
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "*Items purchased*"
+                    }
+                },
+            {
+                "type": "section",
+                "fields": items_purchased,
+                },
+            {
+                "type": "divider"
+                },
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "*{customer_name}*\n*Customer_id:* {customer_id}\n{note}".format(customer_name=customer_name, customer_id=customer_id, note=note)
+                    }
+                },
+            {
+                "type": "section",
+                "fields": [
+                    {
+                        "type": "mrkdwn",
+                        "text": "*Billing Address*\n{billing_address}".format(billing_address=billing_address)
+                        },
+                    {
+                        "type": "mrkdwn",
+                        "text": "*Shipping Address*\n{shipping_address}".format(shipping_address=shipping_address)
+                        }
+                    ]
+                }
+            ]
+        return return_message
         
         

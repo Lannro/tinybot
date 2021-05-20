@@ -48,6 +48,17 @@ def check_products(response_channel):
     
     slack.post_message(response_channel, message)
 
+def get_order(response_channel, order_id):
+    global woo, slack
+    order = woo.get_order(order_id)
+    if not order:
+        logging.error("Could not retrieve order_id:{}".format(order_id))
+        slack.post_message(response_channel, "Could not retrieve order_id:{}".format(order_id))
+        return
+
+    blocks = message_builder.woocommerce_order(order)
+    slack.post_message(response_channel, "order", blocks=blocks)
+    
 def get_product(response_channel, product_id):
     global woo, slack
     product = woo.get_product(product_id)
