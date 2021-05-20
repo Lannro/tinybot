@@ -92,6 +92,9 @@ def get_request():
         if get_type == "product":
             threading.Thread(target=get_product, args=(request.form['channel_id'],type_id)).start()
             return "Retrieving product!"
+        elif get_type == "order":
+            threading.Thread(target=get_order, args=(request.form['channel_id'],type_id)).start()
+            return "Retrieving product!"
         else:
             return "Sorry, I don't know how to get {} for you".format(get_type)
 
