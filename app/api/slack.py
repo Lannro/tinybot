@@ -5,13 +5,15 @@ class SlackInstance:
     def __init__(self, bearer):
         self._bearer=bearer
 
-    def post_message(self, channel, text, blocks = None):
-        return requests.post('https://slack.com/api/chat.postMessage', {
+    def post_message(channel, text, blocks = None):
+        logging.debug("Sending message to slack:{}".format(text))
+        response = requests.post('https://slack.com/api/chat.postMessage', {
             'token': self._bearer,
             'channel': channel,
             'text': text,
             'blocks': json.dumps(blocks) if blocks else None
-        }).json()
+            }).json()
+        logging.debug("Slack response: {}".format(response))
 
 class message_builder:
     def woocommerce_product(product):
