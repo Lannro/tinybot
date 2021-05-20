@@ -10,7 +10,7 @@ class SlackInstance(APIInstance):
 
     def post_message(self, response_channel, message):
         logging.debug("Sending message to slack:{}".format(message))
-        response = self.call_api("chat.postMessage", post_fields={"channel":response_channel, "text":message})
+        response = self.call_api("chat.postMessage?channel={}".format(response_channel), post_fields=message)
         logging.debug("Slack response: {}".format(response.read()))
 
 class message_builder:
