@@ -144,7 +144,7 @@ class APIInstance:
             if self._urlencode:
                 request.data = urlencode(post_fields, doseq=True).encode('utf-8')
             else:
-                request.data = post_fields
+                request.data = json.dumps(post_fields).encode('utf-8')
         return request
 
     def get_body(self, response):
