@@ -69,7 +69,7 @@ def get_request():
         split = text.split(" ")
         if len(split) < 2:
             logging.error("formatting error")
-            return "Formatting error!")
+            return "Formatting error!"
 
         get_type = split[0]
         try:
@@ -78,7 +78,7 @@ def get_request():
             logging.error("Invalid product id given")
             return "Error checking product: Invalid product id given"
 
-        if get_type == "product"        
+        if get_type == "product":
             threading.Thread(target=get_product, args=(request.form['channel_id'],product_id)).start()
             return "Retrieving product!"
         else:
