@@ -48,7 +48,16 @@ def check_products(response_channel):
     
     slack.post_message(response_channel, message)
 
-    
+def get_product(response_channel, product_id):
+    global woo, slack
+    product = woo.get_product(product_id)
+    if not product:
+        logging.error("Could not retrieve product_id:{}".format(product_id))
+        slack.post_message(response_channel, "Could not retrieve product_id:{}".format(product_id))
+        return
+
+    message = message_builder.woocommerce_product(product)    
+    slack.post_message(response_channel, message)
 
 @app.route("/get", methods=['POST'])
 def get_request():
@@ -56,9 +65,24 @@ def get_request():
         if request.form['token'] != _SLACK_VERIFICATION_TOKEN:
             logging.warning("Invalid token given with request: {}".format(request.form['token']))
             return "invalid token"
-        logging.info(request.form)
-        #threading.Thread(target=check_products, args=(request.form['channel_id'],)).start()
-        return "RETURNING TEST"
+        text = request.form['text']
+        split = text.split(" ")
+        if len(split) < 2:
+            logging.error("formatting error")
+            return "Formatting error!")
+
+        get_type = split[0]
+        try:
+            type_id = int(split[1])
+        except ValueError:
+            logging.error("Invalid product id given")
+            return "Error checking product: Invalid product id given"
+
+        if get_type == "product"        
+            threading.Thread(target=get_product, args=(request.form['channel_id'],product_id)).start()
+            return "Retrieving product!"
+        else:
+            return "Sorry, I don't know how to get {} for you".format(get_type)
 
     except Exception as e:
         traceback.print_exc()
