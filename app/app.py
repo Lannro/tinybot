@@ -79,7 +79,7 @@ def get_request():
             return "Error checking product: Invalid product id given"
 
         if get_type == "product":
-            threading.Thread(target=get_product, args=(request.form['channel_id'],product_id)).start()
+            threading.Thread(target=get_product, args=(request.form['channel_id'],type_id)).start()
             return "Retrieving product!"
         else:
             return "Sorry, I don't know how to get {} for you".format(get_type)
@@ -105,6 +105,6 @@ def check_request():
         return "Error checking products."
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
     woo = WoocommerceInstance(url=_WOO_SITE_URL,username=_WOO_USERNAME,password=_WOO_PASSWORD)
     slack = SlackInstance(bearer=_SLACK_BOT_USER_OATH)
+    app.run(host='0.0.0.0')
