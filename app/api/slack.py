@@ -101,7 +101,7 @@ class message_builder:
                 "text": {
                     "type": "plain_text",
                     "text": "{order_id} - {status}".format(order_id=order_id,status=status),
-                    "emoji": true
+                    "emoji": True
                     }
                 },
             {
