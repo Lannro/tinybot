@@ -70,6 +70,14 @@ def get_product(response_channel, product_id):
     blocks = message_builder.woocommerce_product(product)
     slack.post_message(response_channel, "product", blocks=blocks)
 
+@app.route("/orders", method['GET'])
+def orders_webhook():
+    try:
+        print(request)
+        for x in request.form:
+            print(request.form[x])
+        return 1
+
 @app.route("/get", methods=['POST'])
 def get_request():
     try:
